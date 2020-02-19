@@ -1,0 +1,12 @@
+lenguage: java
+
+jdk: openjdk8
+
+script:
+    - echo "Hola travis"
+    - mvn package 
+    - chmod 400 acceso.pem
+    - ssh-keyscan -H 3.12.7.166 >> ~/.ssh/known_hosts
+    - ssh-keyscan -H ec2-3-12-7-166.us-east-2.compute.amazonaws.com >> ~/.ssh/known_hosts
+    - scp -i acceso.pem ubuntu@3.12.7.166 "rm -rf /var/lib/tomcat8/webapps/Netflix*"
+    - scp -i acceso.pem target*.war ubuntu@3.12.7.166:/var/lib/tomcat8/webapps/Netflix.war
